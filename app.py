@@ -517,11 +517,11 @@ def main():
         st.session_state.ui_status_filter,
         st.session_state.ui_selected_discipline,
     )
-    metrics_mode = st.segmented_control(
+    metrics_mode = st.radio(
         "Modo das métricas",
         options=["Filtro", "Global"],
-        selection_mode="single",
-        default="Filtro" if st.session_state.ui_metrics_mode == "filtro" else "Global",
+        index=0 if st.session_state.ui_metrics_mode == "filtro" else 1,
+        horizontal=True,
     )
     st.session_state.ui_metrics_mode = "global" if metrics_mode == "Global" else "filtro"
 
