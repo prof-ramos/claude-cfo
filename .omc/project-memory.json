@@ -64,8 +64,38 @@
   "hotPaths": [
     {
       "path": "app.py",
-      "accessCount": 9,
-      "lastAccessed": 1772820266583,
+      "accessCount": 25,
+      "lastAccessed": 1772821556376,
+      "type": "file"
+    },
+    {
+      "path": "",
+      "accessCount": 16,
+      "lastAccessed": 1772821247735,
+      "type": "directory"
+    },
+    {
+      "path": "tests/unit/test_progress.py",
+      "accessCount": 8,
+      "lastAccessed": 1772821898938,
+      "type": "file"
+    },
+    {
+      "path": "pyproject.toml",
+      "accessCount": 7,
+      "lastAccessed": 1772821273330,
+      "type": "file"
+    },
+    {
+      "path": "tests/unit/test_filters.py",
+      "accessCount": 6,
+      "lastAccessed": 1772821243664,
+      "type": "file"
+    },
+    {
+      "path": "tests/integration/test_full_flow.py",
+      "accessCount": 6,
+      "lastAccessed": 1772821920369,
       "type": "file"
     },
     {
@@ -75,39 +105,39 @@
       "type": "file"
     },
     {
-      "path": "tests/unit/test_filters.py",
+      "path": "README.md",
       "accessCount": 5,
-      "lastAccessed": 1772820321321,
+      "lastAccessed": 1772820799205,
       "type": "file"
     },
     {
       "path": "requirements.txt",
-      "accessCount": 4,
-      "lastAccessed": 1772819884464,
-      "type": "file"
-    },
-    {
-      "path": "pyproject.toml",
-      "accessCount": 4,
-      "lastAccessed": 1772820091908,
+      "accessCount": 5,
+      "lastAccessed": 1772821240293,
       "type": "file"
     },
     {
       "path": "tests/unit/test_calculations.py",
-      "accessCount": 4,
-      "lastAccessed": 1772820328263,
+      "accessCount": 5,
+      "lastAccessed": 1772821247660,
       "type": "file"
     },
     {
       "path": "Dockerfile",
-      "accessCount": 3,
-      "lastAccessed": 1772819091331,
+      "accessCount": 4,
+      "lastAccessed": 1772820793672,
       "type": "file"
     },
     {
-      "path": "README.md",
-      "accessCount": 2,
-      "lastAccessed": 1772818712128,
+      "path": "tests",
+      "accessCount": 3,
+      "lastAccessed": 1772821537019,
+      "type": "directory"
+    },
+    {
+      "path": "tests/e2e/test_filters.py",
+      "accessCount": 3,
+      "lastAccessed": 1772821803045,
       "type": "file"
     },
     {
@@ -117,9 +147,15 @@
       "type": "file"
     },
     {
-      "path": "tests/unit/test_progress.py",
+      "path": "tests/e2e/test_topic_checkboxes.py",
       "accessCount": 2,
-      "lastAccessed": 1772820247109,
+      "lastAccessed": 1772821733961,
+      "type": "file"
+    },
+    {
+      "path": "tests/e2e/test_edge_cases.py",
+      "accessCount": 2,
+      "lastAccessed": 1772821757698,
       "type": "file"
     },
     {
@@ -153,9 +189,21 @@
       "type": "file"
     },
     {
-      "path": "tests/integration/test_full_flow.py",
+      "path": "tests/e2e/__init__.py",
       "accessCount": 1,
-      "lastAccessed": 1772820172316,
+      "lastAccessed": 1772821635875,
+      "type": "file"
+    },
+    {
+      "path": "tests/e2e/conftest.py",
+      "accessCount": 1,
+      "lastAccessed": 1772821636183,
+      "type": "file"
+    },
+    {
+      "path": "tests/e2e/README.md",
+      "accessCount": 1,
+      "lastAccessed": 1772821702134,
       "type": "file"
     }
   ],

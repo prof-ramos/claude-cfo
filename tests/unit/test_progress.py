@@ -38,8 +38,11 @@ class TestLoadProgress:
         progress_file = tmp_path / "test_progress.json"
         progress_file.write_text("")
 
-        import app
-        monkeypatch.setattr(app, "PROGRESS_FILE", progress_file)
+        # Usar env var para consistência com testes E2E
+        monkeypatch.setenv("PROGRESS_FILE", str(progress_file))
+        if 'app' in sys.modules:
+            del sys.modules['app']
+        from app import load_progress
 
         result = load_progress()
 
@@ -51,8 +54,11 @@ class TestLoadProgress:
         data = {"Língua Portuguesa||1 Compreensão": True}
         progress_file.write_text(json.dumps(data))
 
-        import app
-        monkeypatch.setattr(app, "PROGRESS_FILE", progress_file)
+        # Usar env var para consistência com testes E2E
+        monkeypatch.setenv("PROGRESS_FILE", str(progress_file))
+        if 'app' in sys.modules:
+            del sys.modules['app']
+        from app import load_progress
 
         result = load_progress()
 
@@ -63,9 +69,11 @@ class TestLoadProgress:
         progress_file = tmp_path / "test_progress.json"
         progress_file.write_text("{invalid json}")
 
-        # Mock PROGRESS_FILE
-        import app
-        monkeypatch.setattr(app, "PROGRESS_FILE", progress_file)
+        # Usar env var para consistência com testes E2E
+        monkeypatch.setenv("PROGRESS_FILE", str(progress_file))
+        if 'app' in sys.modules:
+            del sys.modules['app']
+        from app import load_progress
 
         result = load_progress()
 
@@ -81,8 +89,11 @@ class TestLoadProgress:
         """Arquivo inexistente retorna dict vazio."""
         progress_file = tmp_path / "nonexistent.json"
 
-        import app
-        monkeypatch.setattr(app, "PROGRESS_FILE", progress_file)
+        # Usar env var para consistência com testes E2E
+        monkeypatch.setenv("PROGRESS_FILE", str(progress_file))
+        if 'app' in sys.modules:
+            del sys.modules['app']
+        from app import load_progress
 
         result = load_progress()
 
@@ -97,8 +108,11 @@ class TestSaveProgress:
         progress_file = tmp_path / "test_progress.json"
         data = {"Disciplina||Tópico": True}
 
-        import app
-        monkeypatch.setattr(app, "PROGRESS_FILE", progress_file)
+        # Usar env var para consistência com testes E2E
+        monkeypatch.setenv("PROGRESS_FILE", str(progress_file))
+        if 'app' in sys.modules:
+            del sys.modules['app']
+        from app import save_progress
 
         save_progress(data)
 
@@ -114,8 +128,11 @@ class TestSaveProgress:
 
         new_data = {"new": "data"}
 
-        import app
-        monkeypatch.setattr(app, "PROGRESS_FILE", progress_file)
+        # Usar env var para consistência com testes E2E
+        monkeypatch.setenv("PROGRESS_FILE", str(progress_file))
+        if 'app' in sys.modules:
+            del sys.modules['app']
+        from app import save_progress
 
         save_progress(new_data)
 
@@ -128,8 +145,11 @@ class TestSaveProgress:
         progress_file = tmp_path / "test_progress.json"
         data = {"Língua Portuguesa||Compreensão": True, "Direito Constitucional||1.1 Conceito": False}
 
-        import app
-        monkeypatch.setattr(app, "PROGRESS_FILE", progress_file)
+        # Usar env var para consistência com testes E2E
+        monkeypatch.setenv("PROGRESS_FILE", str(progress_file))
+        if 'app' in sys.modules:
+            del sys.modules['app']
+        from app import save_progress
 
         save_progress(data)
 

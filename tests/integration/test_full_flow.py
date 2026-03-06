@@ -22,8 +22,12 @@ class TestFullFlow:
     def test_complete_mark_and_retrieve_flow(self, tmp_path, monkeypatch):
         """Fluxo completo: carregar -> marcar -> salvar -> recarregar -> verificar."""
         progress_file = tmp_path / "test_progress.json"
-        import app
-        monkeypatch.setattr(app, "PROGRESS_FILE", progress_file)
+
+        # Usar env var para consistência
+        monkeypatch.setenv("PROGRESS_FILE", str(progress_file))
+        if 'app' in sys.modules:
+            del sys.modules['app']
+        from app import load_progress, save_progress, calc_discipline_progress, get_topic_key, EDITAL
 
         # 1. Carregar estado inicial (arquivo não existe)
         progress = load_progress()
@@ -57,8 +61,12 @@ class TestFullFlow:
     def test_flow_with_backup_on_corruption(self, tmp_path, monkeypatch):
         """Fluxo: salvar -> corromper -> carregar (deve criar backup)."""
         progress_file = tmp_path / "test_progress.json"
-        import app
-        monkeypatch.setattr(app, "PROGRESS_FILE", progress_file)
+
+        # Usar env var para consistência
+        monkeypatch.setenv("PROGRESS_FILE", str(progress_file))
+        if 'app' in sys.modules:
+            del sys.modules['app']
+        from app import load_progress, save_progress
 
         # 1. Salvar dados válidos
         valid_data = {"Teste||Tópico": True}
@@ -78,8 +86,12 @@ class TestFullFlow:
     def test_multi_discipline_progress_tracking(self, tmp_path, monkeypatch):
         """Acompanhamento de progresso em múltiplas disciplinas."""
         progress_file = tmp_path / "test_progress.json"
-        import app
-        monkeypatch.setattr(app, "PROGRESS_FILE", progress_file)
+
+        # Usar env var para consistência
+        monkeypatch.setenv("PROGRESS_FILE", str(progress_file))
+        if 'app' in sys.modules:
+            del sys.modules['app']
+        from app import load_progress, save_progress, calc_discipline_progress, calc_overall_progress, get_topic_key, EDITAL
 
         progress = {}
 
@@ -107,16 +119,25 @@ class TestFullFlow:
     def test_persistence_across_sessions(self, tmp_path, monkeypatch):
         """Simula duas sessões de usuário com persistência."""
         progress_file = tmp_path / "test_progress.json"
-        import app
-        monkeypatch.setattr(app, "PROGRESS_FILE", progress_file)
+
+        # Usar env var para consistência
+        monkeypatch.setenv("PROGRESS_FILE", str(progress_file))
 
         # === Sessão 1: Usuário marca alguns tópicos ===
+        if 'app' in sys.modules:
+            del sys.modules['app']
+        from app import load_progress, save_progress, calc_discipline_progress, get_topic_key, EDITAL
+
         sessao1_progress = load_progress()
         sessao1_progress[get_topic_key("Língua Portuguesa", EDITAL["Língua Portuguesa"][0])] = True
         sessao1_progress[get_topic_key("Língua Portuguesa", EDITAL["Língua Portuguesa"][1])] = True
         save_progress(sessao1_progress)
 
         # === Sessão 2: Usuário retoma e marca mais ===
+        if 'app' in sys.modules:
+            del sys.modules['app']
+        from app import load_progress, save_progress, calc_discipline_progress, get_topic_key, EDITAL
+
         sessao2_progress = load_progress()
         assert len(sessao2_progress) == 2  # Tópicos da sessão 1 persistidos
 
@@ -125,6 +146,10 @@ class TestFullFlow:
         save_progress(sessao2_progress)
 
         # === Verificar estado final ===
+        if 'app' in sys.modules:
+            del sys.modules['app']
+        from app import load_progress, calc_discipline_progress
+
         final_progress = load_progress()
         assert len(final_progress) == 3
         done, total = calc_discipline_progress(final_progress, "Língua Portuguesa")
