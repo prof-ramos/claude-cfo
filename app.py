@@ -35,8 +35,10 @@ EDITAL = {
         "1 Compreensão e interpretação de textos de gêneros variados",
         "2 Reconhecimento de tipos e gêneros textuais",
         "3 Domínio da ortografia oficial",
+        "4 Domínio dos mecanismos de coesão textual",
         "4.1 Emprego de elementos de referenciação, substituição e repetição, conectores e sequenciação textual",
         "4.2 Emprego de tempos e modos verbais",
+        "5 Domínio da estrutura morfossintática do período",
         "5.1 Emprego das classes de palavras",
         "5.2 Relações de coordenação entre orações e entre termos da oração",
         "5.3 Relações de subordinação entre orações e entre termos da oração",
@@ -45,6 +47,7 @@ EDITAL = {
         "5.6 Regência verbal e nominal",
         "5.7 Emprego do sinal indicativo de crase",
         "5.8 Colocação dos pronomes átonos",
+        "6 Reescrita de frases e parágrafos do texto",
         "6.1 Significação das palavras",
         "6.2 Substituição de palavras ou de trechos de texto",
         "6.3 Reorganização da estrutura de orações e de períodos do texto",
@@ -440,17 +443,32 @@ def build_hierarchical_structure(discipline_topics):
 
             if not found:
                 # Criar novo nó
-                new_node = {
-                    'number': level_num,
-                    'level': i,
-                    'text': text if i == len(levels) - 1 else f"Tópico {level_num}",
-                    'full_text': topic if i == len(levels) - 1 else None,
-                    'children': []
-                }
+                # Para o último nível (folha), usar full_text completo
+                # Para níveis intermediários (pais), SEM full_text (será cabeçalho visual)
+                if i == len(levels) - 1:
+                    # Nó folha - tem full_text
+                    new_node = {
+                        'number': level_num,
+                        'level': i,
+                        'text': text,
+                        'full_text': topic,
+                        'children': []
+                    }
+                else:
+                    # Nó pai intermediário - SEM full_text (apenas agrupador visual)
+                    new_node = {
+                        'number': level_num,
+                        'level': i,
+                        'text': f"Tópico {level_num}",
+                        'full_text': None,  # Não tem full_text, não será checkbox
+                        'children': []
+                    }
                 current_level.append(new_node)
                 current_level = new_node['children']
             else:
                 current_level = found['children']
+
+    return root_nodes
 
     return root_nodes
 
@@ -598,6 +616,12 @@ def render_hierarchical_topic(node, discipline, progress, depth=0, parent_number
             # Atualizar progresso (percentual do expander será atualizado na próxima interação)
             st.session_state.progress = progress
             save_progress(progress)
+    elif node['number'] is not None:
+        # Nó pai sem full_text - renderizar como cabeçalho visual (não interativo)
+        # Usar st.markdown para exibir o número do tópico pai como título
+        indent = "\u00a0\u00a0\u00a0" * depth
+        parent_label = f"{indent}{node['number']} {node['text']}"
+        st.markdown(f"**{parent_label}**")
 
     # Renderizar filhos recursivamente
     for child in node['children']:
