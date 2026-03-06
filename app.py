@@ -475,7 +475,7 @@ def build_hierarchical_structure(discipline_topics):
 
 def get_all_descendants(node, discipline):
     """
-    Coleta todos os tópicos descendentes de um nó.
+    Coleta todos os tópicos descendentes de um nó (excluindo o próprio nó).
 
     Args:
         node: Nó da árvore hierárquica
@@ -486,11 +486,15 @@ def get_all_descendants(node, discipline):
     """
     descendants = []
 
-    if node['full_text']:
-        key = get_topic_key(discipline, node['full_text'])
-        descendants.append(key)
+    # NÃO adicionar o próprio nó, apenas percorrer os filhos
+    # Isso evita marcar o pai duas vezes
 
     for child in node['children']:
+        # Se o filho tem full_text, adicionar aos descendentes
+        if child['full_text']:
+            key = get_topic_key(discipline, child['full_text'])
+            descendants.append(key)
+        # Recursivamente coletar descendentes dos filhos
         descendants.extend(get_all_descendants(child, discipline))
 
     return descendants
