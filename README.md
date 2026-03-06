@@ -10,6 +10,9 @@ pinned: false
 
 # 🎖️ PMDF – CFO 2025 | Dashboard de Estudos
 
+[![Tests](https://github.com/prof-ramos/claude-cfo/actions/workflows/test.yml/badge.svg)](https://github.com/prof-ramos/claude-cfo/actions/workflows/test.yml)
+[![codecov](https://codecov.io/gh/prof-ramos/claude-cfo/graph/badge.svg)](https://codecov.io/gh/prof-ramos/claude-cfo)
+
 Dashboard em Streamlit para acompanhar progresso por disciplina e tópico do edital PMDF CFO 2025.
 
 ## Quick Start
