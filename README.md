@@ -1,3 +1,12 @@
+---
+title: PMDF CFO 2025 - Dashboard de Estudos
+emoji: 🎖️
+colorFrom: blue
+colorTo: indigo
+sdk: docker
+pinned: false
+---
+
 # 🎖️ PMDF – CFO 2025 | Dashboard de Estudos
 
 ## Como rodar
