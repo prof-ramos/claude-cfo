@@ -502,17 +502,6 @@ def init_ui_state():
         st.session_state.ui_selected_discipline = None
     if "ui_metrics_mode" not in st.session_state:
         st.session_state.ui_metrics_mode = "filtro"
-    # Inicializar estados dos expanders
-    if "expander_states" not in st.session_state:
-        st.session_state.expander_states = {
-            discipline: False
-            for discipline in EDITAL.keys()
-        }
-
-
-def get_expander_state(discipline):
-    """Retorna estado atual do expander ou False como default."""
-    return st.session_state.expander_states.get(discipline, False)
 
 
 def topic_matches_filter(progress, discipline, topic, status_filter):
@@ -571,6 +560,9 @@ def render_hierarchical_topic(node, discipline, progress, depth=0, parent_number
         depth: Profundidade atual (para indentação)
         parent_number: Número completo do pai (ex: "1.4")
     """
+    # Inicializar full_number com o valor do pai (evita UnboundLocalError)
+    full_number = parent_number
+
     # Se nó tem texto completo (é uma folha ou nó intermediário com texto)
     if node['full_text']:
         key = get_topic_key(discipline, node['full_text'])
@@ -586,8 +578,8 @@ def render_hierarchical_topic(node, discipline, progress, depth=0, parent_number
             full_number = ""
             text = node['text']
 
-        # Indentação visual baseada na profundidade (3 espaços em branco por nível)
-        indent = "   " * depth
+        # Indentação visual usando non-breaking spaces (não colapsa no HTML/Streamlit)
+        indent = "\u00a0\u00a0\u00a0" * depth
 
         # Checkbox com número completo e indentação
         label = f"{indent}{full_number} {text}" if full_number else f"{indent}{text}"
@@ -603,11 +595,13 @@ def render_hierarchical_topic(node, discipline, progress, depth=0, parent_number
                     progress[desc_key] = True
             # NOTA: Desmarcar pai NÃO desmarca filhos (preferência do usuário)
 
+            # Atualizar progresso (percentual do expander será atualizado na próxima interação)
             st.session_state.progress = progress
             save_progress(progress)
 
     # Renderizar filhos recursivamente
     for child in node['children']:
+        # Usar full_number calculado ou parent_number se nó não tem full_text
         child_parent_number = full_number if node.get('full_text') else parent_number
         render_hierarchical_topic(child, discipline, progress, depth + 1, child_parent_number)
 
@@ -754,7 +748,9 @@ def main():
             done, total = calc_discipline_progress(progress, disc)
             p = done / total * 100 if total else 0
 
-            with st.expander(f"{disc}  —  {p:.0f}% concluído  ({done}/{total})", expanded=get_expander_state(disc)):
+            # O expander mantém seu estado automaticamente quando não há st.rerun()
+            # Streamlit preserva o estado de aberto/fechado entre interações
+            with st.expander(f"{disc}  —  {p:.0f}% concluído  ({done}/{total})"):
                 st.markdown(
                     f"<div class='progress-label'>{done} de {total} tópicos estudados</div>",
                     unsafe_allow_html=True,
