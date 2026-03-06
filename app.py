@@ -525,6 +525,12 @@ def init_ui_state():
     if "ui_metrics_mode" not in st.session_state:
         st.session_state.ui_metrics_mode = "filtro"
 
+    # Inicializar estados dos expanders (começam fechados)
+    for discipline in EDITAL.keys():
+        expander_key = f"expander_{discipline}"
+        if expander_key not in st.session_state:
+            st.session_state[expander_key] = False
+
 
 def topic_matches_filter(progress, discipline, topic, status_filter):
     is_done = progress.get(get_topic_key(discipline, topic), False)
@@ -613,8 +619,15 @@ def render_hierarchical_topic(node, discipline, progress, depth=0, parent_number
             # Se marcando o pai, marcar todos os descendentes
             if new_val:
                 descendants = get_all_descendants(node, discipline)
-                for desc_key in descendants:
-                    progress[desc_key] = True
+                if descendants:  # Só fazer rerun se houver descendentes
+                    for desc_key in descendants:
+                        progress[desc_key] = True
+                    # Manter expander da disciplina aberto após rerun
+                    st.session_state[f"expander_{discipline}"] = True
+                    # Forçar rerun para atualizar visualmente os checkboxes dos descendentes
+                    st.session_state.progress = progress
+                    save_progress(progress)
+                    st.rerun()
             # NOTA: Desmarcar pai NÃO desmarca filhos (preferência do usuário)
 
             # Atualizar progresso (percentual do expander será atualizado na próxima interação)
@@ -776,9 +789,17 @@ def main():
             done, total = calc_discipline_progress(progress, disc)
             p = done / total * 100 if total else 0
 
-            # O expander mantém seu estado automaticamente quando não há st.rerun()
-            # Streamlit preserva o estado de aberto/fechado entre interações
-            with st.expander(f"{disc}  —  {p:.0f}% concluído  ({done}/{total})"):
+            # Usar expander com estado gerenciado manualmente para não fechar em st.rerun()
+            expander_key = f"expander_{disc}"
+            if expander_key not in st.session_state:
+                st.session_state[expander_key] = False  # Começa fechado
+
+            with st.expander(
+                f"{disc}  —  {p:.0f}% concluído  ({done}/{total})",
+                expanded=st.session_state[expander_key]
+            ):
+                # Atualizar estado do expander (Streamlit alterna automaticamente)
+                st.session_state[expander_key] = True  # Assume aberto após interação
                 st.markdown(
                     f"<div class='progress-label'>{done} de {total} tópicos estudados</div>",
                     unsafe_allow_html=True,
