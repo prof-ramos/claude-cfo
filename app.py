@@ -380,6 +380,104 @@ def get_topic_key(discipline, topic):
     return f"{discipline}||{topic}"
 
 
+def parse_topic_number(topic_string):
+    """
+    Extrai número hierárquico e texto do tópico.
+
+    Args:
+        topic_string: "1.2.3 Texto do tópico"
+
+    Returns:
+        tuple: ([1, 2, 3], "Texto do tópico")
+               ou (None, topic_string) se não tiver número
+    """
+    import re
+    match = re.match(r'^(\d+(?:\.\d+)*)\s+(.+)$', topic_string)
+    if match:
+        number_str = match.group(1)
+        text = match.group(2)
+        levels = [int(x) for x in number_str.split('.')]
+        return levels, text
+    return None, topic_string
+
+
+def build_hierarchical_structure(discipline_topics):
+    """
+    Constrói árvore hierárquica de tópicos.
+
+    Args:
+        discipline_topics: ["1 Tópico", "1.1 Subtópico", "2 Tópico"]
+
+    Returns:
+        list: Árvore de nós hierárquicos
+    """
+    root_nodes = []
+
+    for topic in discipline_topics:
+        levels, text = parse_topic_number(topic)
+
+        if levels is None:
+            # Tópico sem número - adicionar como folha solta
+            root_nodes.append({
+                'number': None,
+                'level': 0,
+                'text': text,
+                'full_text': topic,
+                'children': []
+            })
+            continue
+
+        # Encontrar ou criar caminho
+        current_level = root_nodes
+
+        for i, level_num in enumerate(levels):
+            # Buscar nó existente neste nível
+            found = None
+            for node in current_level:
+                if node['number'] == level_num and node['level'] == i:
+                    found = node
+                    break
+
+            if not found:
+                # Criar novo nó
+                new_node = {
+                    'number': level_num,
+                    'level': i,
+                    'text': text if i == len(levels) - 1 else f"Tópico {level_num}",
+                    'full_text': topic if i == len(levels) - 1 else None,
+                    'children': []
+                }
+                current_level.append(new_node)
+                current_level = new_node['children']
+            else:
+                current_level = found['children']
+
+    return root_nodes
+
+
+def get_all_descendants(node, discipline):
+    """
+    Coleta todos os tópicos descendentes de um nó.
+
+    Args:
+        node: Nó da árvore hierárquica
+        discipline: Nome da disciplina
+
+    Returns:
+        list: Lista de chaves completas dos descendentes
+    """
+    descendants = []
+
+    if node['full_text']:
+        key = get_topic_key(discipline, node['full_text'])
+        descendants.append(key)
+
+    for child in node['children']:
+        descendants.extend(get_all_descendants(child, discipline))
+
+    return descendants
+
+
 def calc_discipline_progress(progress, discipline):
     topics = EDITAL[discipline]
     total = len(topics)
@@ -404,6 +502,17 @@ def init_ui_state():
         st.session_state.ui_selected_discipline = None
     if "ui_metrics_mode" not in st.session_state:
         st.session_state.ui_metrics_mode = "filtro"
+    # Inicializar estados dos expanders
+    if "expander_states" not in st.session_state:
+        st.session_state.expander_states = {
+            discipline: False
+            for discipline in EDITAL.keys()
+        }
+
+
+def get_expander_state(discipline):
+    """Retorna estado atual do expander ou False como default."""
+    return st.session_state.expander_states.get(discipline, False)
 
 
 def topic_matches_filter(progress, discipline, topic, status_filter):
@@ -449,6 +558,58 @@ def calc_filtered_progress(filtered_groups, progress):
             total_done += done
             total_all += len(topics)
     return total_done, total_all
+
+
+def render_hierarchical_topic(node, discipline, progress, depth=0, parent_number=""):
+    """
+    Renderiza tópico hierárquico com indentação e checkboxes.
+
+    Args:
+        node: Nó da árvore hierárquica
+        discipline: Nome da disciplina
+        progress: Dict de progresso atual
+        depth: Profundidade atual (para indentação)
+        parent_number: Número completo do pai (ex: "1.4")
+    """
+    # Se nó tem texto completo (é uma folha ou nó intermediário com texto)
+    if node['full_text']:
+        key = get_topic_key(discipline, node['full_text'])
+        current_val = progress.get(key, False)
+
+        # Extrair número completo do full_text original
+        import re
+        match = re.match(r'^(\d+(?:\.\d+)*)\s+(.+)$', node['full_text'])
+        if match:
+            full_number = match.group(1)
+            text = match.group(2)
+        else:
+            full_number = ""
+            text = node['text']
+
+        # Indentação visual baseada na profundidade (3 espaços em branco por nível)
+        indent = "   " * depth
+
+        # Checkbox com número completo e indentação
+        label = f"{indent}{full_number} {text}" if full_number else f"{indent}{text}"
+        new_val = st.checkbox(label, value=current_val, key=f"cb_{key}")
+
+        if new_val != current_val:
+            progress[key] = new_val
+
+            # Se marcando o pai, marcar todos os descendentes
+            if new_val:
+                descendants = get_all_descendants(node, discipline)
+                for desc_key in descendants:
+                    progress[desc_key] = True
+            # NOTA: Desmarcar pai NÃO desmarca filhos (preferência do usuário)
+
+            st.session_state.progress = progress
+            save_progress(progress)
+
+    # Renderizar filhos recursivamente
+    for child in node['children']:
+        child_parent_number = full_number if node.get('full_text') else parent_number
+        render_hierarchical_topic(child, discipline, progress, depth + 1, child_parent_number)
 
 
 def main():
@@ -593,7 +754,7 @@ def main():
             done, total = calc_discipline_progress(progress, disc)
             p = done / total * 100 if total else 0
 
-            with st.expander(f"{disc}  —  {p:.0f}% concluído  ({done}/{total})", expanded=False):
+            with st.expander(f"{disc}  —  {p:.0f}% concluído  ({done}/{total})", expanded=get_expander_state(disc)):
                 st.markdown(
                     f"<div class='progress-label'>{done} de {total} tópicos estudados</div>",
                     unsafe_allow_html=True,
@@ -601,17 +762,12 @@ def main():
                 st.progress(p / 100)
                 st.markdown(" ")
 
-                cols = st.columns(2)
-                for i, topic in enumerate(topics):
-                    key = get_topic_key(disc, topic)
-                    current_val = progress.get(key, False)
-                    col = cols[i % 2]
-                    new_val = col.checkbox(topic, value=current_val, key=f"cb_{key}")
-                    if new_val != current_val:
-                        progress[key] = new_val
-                        st.session_state.progress = progress
-                        save_progress(progress)
-                        st.rerun()
+                # Construir estrutura hierárquica
+                hierarchy = build_hierarchical_structure(topics)
+
+                # Renderizar hierarquicamente em 1 coluna
+                for node in hierarchy:
+                    render_hierarchical_topic(node, disc, progress, depth=0)
 
 
 if __name__ == "__main__":
