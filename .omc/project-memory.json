@@ -64,14 +64,14 @@
   "hotPaths": [
     {
       "path": "app.py",
-      "accessCount": 25,
-      "lastAccessed": 1772821556376,
+      "accessCount": 44,
+      "lastAccessed": 1772824484770,
       "type": "file"
     },
     {
       "path": "",
-      "accessCount": 16,
-      "lastAccessed": 1772821247735,
+      "accessCount": 18,
+      "lastAccessed": 1772823659249,
       "type": "directory"
     },
     {
@@ -99,15 +99,15 @@
       "type": "file"
     },
     {
-      "path": "docs/architecture.md",
-      "accessCount": 5,
-      "lastAccessed": 1772819208582,
+      "path": "README.md",
+      "accessCount": 6,
+      "lastAccessed": 1772822120162,
       "type": "file"
     },
     {
-      "path": "README.md",
+      "path": "docs/architecture.md",
       "accessCount": 5,
-      "lastAccessed": 1772820799205,
+      "lastAccessed": 1772819208582,
       "type": "file"
     },
     {
@@ -159,6 +159,12 @@
       "type": "file"
     },
     {
+      "path": "analisecoderabbit_debug.md",
+      "accessCount": 2,
+      "lastAccessed": 1772822988971,
+      "type": "file"
+    },
+    {
       "path": "CHANGELOG.md",
       "accessCount": 1,
       "lastAccessed": 1772818919380,
@@ -204,6 +210,18 @@
       "path": "tests/e2e/README.md",
       "accessCount": 1,
       "lastAccessed": 1772821702134,
+      "type": "file"
+    },
+    {
+      "path": "AGENTS.md",
+      "accessCount": 1,
+      "lastAccessed": 1772825059350,
+      "type": "file"
+    },
+    {
+      "path": "setup_hf_token.py",
+      "accessCount": 1,
+      "lastAccessed": 1772825479304,
       "type": "file"
     }
   ],

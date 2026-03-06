@@ -20,3 +20,19 @@ This file tracks unresolved questions, decisions deferred to the user, and items
 - [x] **Progress file mocking** — RESOLVED: Must use environment variable `PROGRESS_FILE` instead of `monkeypatch.setattr` because `PROGRESS_FILE` is a module-level constant evaluated at import time, and `AppTest.from_file()` loads the app in a subprocess.
 
 - [x] **Persistence testing** — RESOLVED: Added `test_persistence_across_runs` to verify progress survives separate `AppTest` instances.
+
+---
+
+## UX Improvements - Hierarchical Edital - 2026-03-06
+
+- [ ] **Remove st.rerun() impact on metrics** — Need to verify if removing `st.rerun()` at line 614 causes metrics to not update in real-time. If needed, may need to use `st.experimental_rerun()` or accept delayed updates.
+  - *Action:* Test thoroughly during Phase 2 implementation
+
+- [ ] **Indentation readability in 2-column layout** — Need user testing to confirm that 3-space indentation (` `) is visually clear when topics are split across 2 columns.
+  - *Action:* If confusing, consider switching to single-column layout for hierarchical topics
+
+- [ ] **Checkbox behavior when unchecking parent** — Should unchecking a parent topic automatically uncheck all descendants? Current spec only implements auto-check, not auto-uncheck.
+  - *Decision needed:* User preference for auto-uncheck behavior
+
+- [ ] **Display of topic numbers** — Should the full number (e.g., "1.2.3") be visible in the checkbox label, or just the text? Current spec shows only text.
+  - *Decision needed:* User preference for displaying hierarchical numbers

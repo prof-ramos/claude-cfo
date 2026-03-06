@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 progress.json
 .omc/state/
+*_debug.md
+*.debug
