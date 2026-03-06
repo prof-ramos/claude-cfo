@@ -1,0 +1,13 @@
+# PMDF CFO Dashboard
+> Dashboard Streamlit para acompanhamento de estudos do edital PMDF CFO 2025.
+
+## Core Files
+- `app.py`: aplicação principal (UI, filtros, métricas, persistência)
+- `requirements.txt`: dependências de runtime
+- `Dockerfile`: execução no Hugging Face Spaces
+- `docs/`: documentação técnica e de contribuição
+
+## Key Concepts
+- Estado único de UI: filtros e métricas são derivados de `st.session_state`
+- Persistência local: progresso salvo em `progress.json`
+- Deploy Docker: Space usa `sdk: docker` e `app_port: 7860`

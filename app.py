@@ -1,8 +1,33 @@
 import streamlit as st
 import json
+import os
 from pathlib import Path
 
-PROGRESS_FILE = Path("progress.json")
+
+def resolve_progress_file():
+    env_path = os.getenv("PROGRESS_FILE")
+    candidates = []
+    if env_path:
+        candidates.append(Path(env_path))
+    candidates.extend([
+        Path("/data/progress.json"),
+        Path("progress.json"),
+        Path("/tmp/progress.json"),
+    ])
+
+    for candidate in candidates:
+        try:
+            candidate.parent.mkdir(parents=True, exist_ok=True)
+            with open(candidate, "a", encoding="utf-8"):
+                pass
+            return candidate
+        except OSError:
+            continue
+
+    return Path("/tmp/progress.json")
+
+
+PROGRESS_FILE = resolve_progress_file()
 
 EDITAL = {
     "Língua Portuguesa": [
@@ -326,13 +351,13 @@ DISC_COLORS = {
 
 def load_progress():
     if PROGRESS_FILE.exists():
-        with open(PROGRESS_FILE, "r") as f:
+        with open(PROGRESS_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
     return {}
 
 
 def save_progress(progress):
-    with open(PROGRESS_FILE, "w") as f:
+    with open(PROGRESS_FILE, "w", encoding="utf-8") as f:
         json.dump(progress, f, ensure_ascii=False, indent=2)
 
 

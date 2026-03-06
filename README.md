@@ -10,29 +10,58 @@ pinned: false
 
 # 🎖️ PMDF – CFO 2025 | Dashboard de Estudos
 
-## Como rodar
+Dashboard em Streamlit para acompanhar progresso por disciplina e tópico do edital PMDF CFO 2025.
+
+## Quick Start
 
 ### Com `uv` (recomendado)
 
 ```bash
-# 1. Crie o ambiente virtual e instale as dependências
 uv sync
-
-# 2. Rode o app
 uv run streamlit run app.py
 ```
 
-### Alternativa sem uv
+### Alternativa sem `uv`
+
 ```bash
-pip install streamlit
+pip install -r requirements.txt
 streamlit run app.py
 ```
 
-## Funcionalidades
+## Features
 
-- ✅ Checkbox por tópico — marque o que já estudou
-- 📊 Barra de progresso por disciplina (sidebar + card)
-- 📈 Progresso geral do edital em tempo real
-- 💾 Persistência automática em `progress.json`
-- 🗑️ Botão para resetar tudo
-- 🎨 Cor distinta por disciplina
+- Controle de estudo por checkbox em cada tópico
+- Filtro por status (`Todas`, `Pendentes`, `Concluídas`)
+- Filtro por disciplina na sidebar
+- Métricas no topo em modo `Filtro` ou `Global`
+- Persistência local automática em `progress.json`
+
+## Configuração
+
+| Variável/Arquivo | Descrição | Padrão |
+|---|---|---|
+| `PROGRESS_FILE` (`app.py`) | Arquivo de persistência | `progress.json` |
+| `PORT` (Docker/Space) | Porta do Streamlit | `7860` |
+
+## Documentação
+
+- [Arquitetura](./docs/architecture.md)
+- [Contribuição](./docs/contributing.md)
+- [Changelog](./CHANGELOG.md)
+- [Plano de UI (Mermaid)](./docs/plans/2026-03-06-sidebar-filtros-design.md)
+
+## API Reference
+
+Este projeto não expõe API HTTP pública; toda a interação ocorre na interface Streamlit.
+
+## Contribuindo
+
+1. Crie branch a partir de `main`
+2. Rode `uv run --no-project python -m py_compile app.py`
+3. Abra PR com descrição, validação e screenshots quando houver mudança visual
+
+Detalhes completos em [docs/contributing.md](./docs/contributing.md).
+
+## License
+
+Uso educacional/pessoal. Defina licença formal antes de distribuição comercial.
