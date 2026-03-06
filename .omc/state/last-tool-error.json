@@ -1,7 +1,0 @@
-{
-  "tool_name": "Read",
-  "tool_input_preview": "{\"file_path\":\"/Users/gabrielramos/Downloads/claude-CFO/tests/conftest.py 2>/dev/null || echo \\\"File not found\\\"\"}",
-  "error": "File does not exist. Note: your current working directory is /Users/gabrielramos/Downloads/claude-CFO.",
-  "timestamp": "2026-03-06T18:25:41.343Z",
-  "retry_count": 1
-}
