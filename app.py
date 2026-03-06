@@ -2,6 +2,7 @@ import streamlit as st
 import json
 import os
 from pathlib import Path
+from datetime import datetime
 
 
 def resolve_progress_file():
@@ -351,8 +352,22 @@ DISC_COLORS = {
 
 def load_progress():
     if PROGRESS_FILE.exists():
-        with open(PROGRESS_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+        try:
+            with open(PROGRESS_FILE, "r", encoding="utf-8") as f:
+                content = f.read().strip()
+                if not content:
+                    return {}
+                return json.loads(content)
+        except (json.JSONDecodeError, OSError):
+            # Preserve invalid content for debugging and start with a clean state.
+            try:
+                backup = PROGRESS_FILE.with_name(
+                    f"{PROGRESS_FILE.stem}.invalid-{datetime.now().strftime('%Y%m%d-%H%M%S')}{PROGRESS_FILE.suffix}"
+                )
+                PROGRESS_FILE.replace(backup)
+            except OSError:
+                pass
+            return {}
     return {}
 
 
