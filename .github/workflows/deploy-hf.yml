@@ -1,0 +1,20 @@
+name: Deploy to Hugging Face
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Deploy to Hugging Face Space
+        uses: codingbone/huggingface-deploy@v0.1.2
+        with:
+          hf_space_id: profgabrielramos/claude-cfo
+          hf_token: ${{ secrets.HF_TOKEN }}

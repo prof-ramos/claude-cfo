@@ -45,3 +45,11 @@ Não há histórico Git disponível neste diretório para inferir padrão prévi
 - Não versione dados pessoais em `progress.json`.
 - Revise dependências no `pyproject.toml` antes de atualizar versões.
 - Para configuração futura, use variáveis de ambiente e documente no `README.md`.
+
+## Hugging Face Space Deploy
+- **Repositório**: https://huggingface.co/spaces/profgabrielramos/claude-cfo
+- **URL do Space**: https://profgabrielramos-claude-cfo.hf.space/
+- **Git Remote**: `hf-space` -> `https://huggingface.co/spaces/profgabrielramos/claude-cfo`
+- **Credenciais**: Token do Hugging Face já configurado no hf_cli
+- **Comando de deploy**: `git push hf-space main` (requer autenticação)
+- **Docker**: Space configurado para rodar com Docker (Dockerfile presente)
