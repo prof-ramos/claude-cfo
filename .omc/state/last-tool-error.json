@@ -1,0 +1,7 @@
+{
+  "tool_name": "Bash",
+  "tool_input_preview": "{\"command\":\"uv run pytest tests/ -v --tb=short\",\"timeout\":60000,\"description\":\"Executar testes com output detalhado\"}",
+  "error": "Exit code 1\n============================= test session starts ==============================\nplatform darwin -- Python 3.13.11, pytest-9.0.2, pluggy-1.6.0 -- /Users/gabrielramos/Downloads/claude-CFO/.venv/bin/python3\ncachedir: .pytest_cache\nrootdir: /Users/gabrielramos/Downloads/claude-CFO\nconfigfile: pyproject.toml\nplugins: cov-7.0.0\ncollecting ... collected 33 items\n\ntests/integration/test_full_flow.py::TestFullFlow::test_complete_mark_and_retrieve_flow PASSED [  3%]\ntests/integration/test_ful...",
+  "timestamp": "2026-03-06T18:02:59.045Z",
+  "retry_count": 1
+}

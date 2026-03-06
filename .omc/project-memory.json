@@ -1,0 +1,163 @@
+{
+  "version": "1.0.0",
+  "lastScanned": 1772818647413,
+  "projectRoot": "/Users/gabrielramos/Downloads/claude-CFO",
+  "techStack": {
+    "languages": [
+      {
+        "name": "Python",
+        "version": null,
+        "confidence": "high",
+        "markers": [
+          "pyproject.toml",
+          "requirements.txt"
+        ]
+      }
+    ],
+    "frameworks": [],
+    "packageManager": "pip",
+    "runtime": null
+  },
+  "build": {
+    "buildCommand": null,
+    "testCommand": "pytest",
+    "lintCommand": "ruff check",
+    "devCommand": null,
+    "scripts": {}
+  },
+  "conventions": {
+    "namingStyle": null,
+    "importStyle": null,
+    "testPattern": null,
+    "fileOrganization": null
+  },
+  "structure": {
+    "isMonorepo": false,
+    "workspaces": [],
+    "mainDirectories": [
+      "docs"
+    ],
+    "gitBranches": null
+  },
+  "customNotes": [],
+  "directoryMap": {
+    "__pycache__": {
+      "path": "__pycache__",
+      "purpose": null,
+      "fileCount": 1,
+      "lastAccessed": 1772818647407,
+      "keyFiles": [
+        "app.cpython-313.pyc"
+      ]
+    },
+    "docs": {
+      "path": "docs",
+      "purpose": "Documentation",
+      "fileCount": 2,
+      "lastAccessed": 1772818647407,
+      "keyFiles": [
+        "architecture.md",
+        "contributing.md"
+      ]
+    }
+  },
+  "hotPaths": [
+    {
+      "path": "app.py",
+      "accessCount": 9,
+      "lastAccessed": 1772820266583,
+      "type": "file"
+    },
+    {
+      "path": "docs/architecture.md",
+      "accessCount": 5,
+      "lastAccessed": 1772819208582,
+      "type": "file"
+    },
+    {
+      "path": "tests/unit/test_filters.py",
+      "accessCount": 5,
+      "lastAccessed": 1772820321321,
+      "type": "file"
+    },
+    {
+      "path": "requirements.txt",
+      "accessCount": 4,
+      "lastAccessed": 1772819884464,
+      "type": "file"
+    },
+    {
+      "path": "pyproject.toml",
+      "accessCount": 4,
+      "lastAccessed": 1772820091908,
+      "type": "file"
+    },
+    {
+      "path": "tests/unit/test_calculations.py",
+      "accessCount": 4,
+      "lastAccessed": 1772820328263,
+      "type": "file"
+    },
+    {
+      "path": "Dockerfile",
+      "accessCount": 3,
+      "lastAccessed": 1772819091331,
+      "type": "file"
+    },
+    {
+      "path": "README.md",
+      "accessCount": 2,
+      "lastAccessed": 1772818712128,
+      "type": "file"
+    },
+    {
+      "path": "docs/contributing.md",
+      "accessCount": 2,
+      "lastAccessed": 1772819106042,
+      "type": "file"
+    },
+    {
+      "path": "tests/unit/test_progress.py",
+      "accessCount": 2,
+      "lastAccessed": 1772820247109,
+      "type": "file"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "accessCount": 1,
+      "lastAccessed": 1772818919380,
+      "type": "file"
+    },
+    {
+      "path": "docs/plans/2026-03-06-sidebar-filtros-design.md",
+      "accessCount": 1,
+      "lastAccessed": 1772818929227,
+      "type": "file"
+    },
+    {
+      "path": "tests/__init__.py",
+      "accessCount": 1,
+      "lastAccessed": 1772820105799,
+      "type": "file"
+    },
+    {
+      "path": "tests/unit/__init__.py",
+      "accessCount": 1,
+      "lastAccessed": 1772820106054,
+      "type": "file"
+    },
+    {
+      "path": "tests/integration/__init__.py",
+      "accessCount": 1,
+      "lastAccessed": 1772820106311,
+      "type": "file"
+    },
+    {
+      "path": "tests/integration/test_full_flow.py",
+      "accessCount": 1,
+      "lastAccessed": 1772820172316,
+      "type": "file"
+    }
+  ],
+  "userDirectives": []
+}
